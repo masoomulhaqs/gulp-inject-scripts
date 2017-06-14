@@ -1,0 +1,29 @@
+{
+  "name": "gulp-inject-scripts",
+  "version": "1.0.0",
+  "description": "a gulp plugin to injects javascript under a script tag",
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/masoomulhaqs/gulp-inject-scripts.git"
+  },
+  "keywords": [
+    "gulpplugin"
+  ],
+  "author": "Masoom Ul Haq S <masoomulhaqs@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/masoomulhaqs/gulp-inject-scripts/issues"
+  },
+  "homepage": "https://github.com/masoomulhaqs/gulp-inject-scripts#readme",
+  "dependencies": {
+    "gulp-util": "^3.0.8",
+    "through2": "^2.0.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
