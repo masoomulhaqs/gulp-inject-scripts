@@ -1,16 +1,21 @@
 var through = require('through2');
 var gutil = require('gulp-util');
 var fs = require('fs');
+var path = require('path');
 var PluginError = gutil.PluginError;
 
 var PLUGIN_NAME = 'gulp-inject-scripts';
 
-// Exporting the plugin main function
-module.exports = function() {
+// EXPORTING THE PLUGIN MAIN FUNCTION
+module.exports = function(opts) {
+
+  if (!opts) opts = {};
+
+  if (!opts.baseDir) opts.baseDir = __dirname;
 
   var self = null;
 
-  var CONST_PATTERN = /<script[\s\S]*?>[\s\S]*?<\/script>/gi;
+  var MATCH_PATTERN = /<script[\s\S]*?>[\s\S]*?<\/script>/gi;
 
   function throwError(msg) {
     self.emit('error', new PluginError(PLUGIN_NAME, msg));
@@ -29,17 +34,31 @@ module.exports = function() {
 
   }
 
+  function wrapTag(text) {
+    return '<script><!--\n\n' + text + '\n\n//--><\/script>';
+  }
+
   function getScript(src) {
 
-    if (src && fs.existsSync(src)) {
-      return '<script>\n' + fs.readFileSync(src) + '\n<\/script>';
+    src = path.join(opts.baseDir, (src)?src:"");
+
+    if (fs.existsSync(src)) {
+
+      var stats = fs.statSync(src);
+
+      return (stats.isFile()) ? wrapTag(fs.readFileSync(src)) : wrapTag('\/* INVALID FILE PATH: ' + src + ' *\/');
+
     } else {
-      return '<script>\n\/*** NO FILE FOUND ***\/\n<\/script>';
+
+      return wrapTag('\/* INVALID FILE PATH: ' + src + ' *\/');
+
     }
 
   };
 
   function injectScript(file, enc, cb) {
+
+    self = this;
 
     if (file.isNull()) {
 
@@ -52,7 +71,7 @@ module.exports = function() {
 
       var contents = String(file.contents);
 
-      contents = contents.replace(new RegExp(CONST_PATTERN), function(match, parameters) {
+      contents = contents.replace(new RegExp(MATCH_PATTERN), function(match, parameters) {
 
         var src = getSource(match);
         return getScript(src);
