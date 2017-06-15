@@ -1,4 +1,4 @@
-# gulp-inject-scripts
+# gulp-inject-scripts [![Build Status](https://travis-ci.org/masoomulhaqs/gulp-inject-scripts.svg?branch=master)](https://travis-ci.org/masoomulhaqs/gulp-inject-scripts)
 
 > A gulp plugin to injects javascript under a script tag
 
